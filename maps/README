@@ -1,0 +1,18 @@
+
+Define maps_view.cgi variables:
+
+General summary:
+
+  http://rgd.mcw.edu/tools/maps/maps_view.cgi
+
+Parsing variables:
+
+  id=map_rgd_id, for example, FHH x ACI=1000,SHRSP x BN=1001, RH map=1002, Integrated Map=1006
+  chr=1 .. 21, display specific chromosome map
+  map_key=1 for FHH x ACI, 2 for SHRSP x BN, 3 for RH map
+  interval=flankMarker1_rgd_id-flankMarker2_rgd_id
+  bin=distance up and down from the marker
+  hilite=marker_rgd_id to show highlight
+  
+  Example:
+  http://rgd.mcw.edu/tools/maps/maps_view.cgi?id=1001&chr=1&interval=37162-41168&map_key=2&hilite=37754

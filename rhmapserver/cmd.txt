@@ -1,0 +1,17 @@
+
+
+1)
+rhmap_placement.cgi user_id=lzhao@mcw.edu section=1077224766
+-------------------------------------------------------------
+map_gif_generator.pl lzhao@mcw.edu 1077224766 Chr20 &
+
+
+
+2)
+rhmap_placement.cgi user_id=lzhao@mcw.edu section=1077224766 data=map_gif
+------------------------------------------------------------------------
+map_viewer.cgi user_id=lzhao@mcw.edu section=1077290183 chrom=Chr1
+
+3)
+map_gif_generator.pl dpasko@mcw.edu 1079997018 21 &
+

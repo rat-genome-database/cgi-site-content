@@ -1,0 +1,115 @@
+
+##################################################################
+# Name:    query_Data($dbh, $no, $query)
+# Purpose: Query data from RGD database. If you want to query 
+# 	   info from other sources, you need to change the 
+#	   DBI->connect. 
+# Usage:   &query_Data($dbh, $no, $query)
+#              $dbh   --- database handler
+#              $no    --- number of columns needed to be queried
+#              $query --- SQL command
+##################################################################
+
+sub query_Data
+{
+  my($dbh, $no, $m, $n, @result, $query, $result);
+ 
+  $dbh = $_[0];
+  $no = $_[1];
+  $query = $_[2];
+
+  @result = ();
+
+   print "$query \n";
+
+  my $sth = $dbh->prepare($query) 
+	or die "Can't prepare statement: $DBI::errstr";
+
+  $sth->execute 
+	or die "Can't execute staement: $DBI::errstr";
+
+  $n = 0;
+
+  while((@str) =  $sth->fetchrow())
+  {
+  	$result = "";
+	for($k=0; $k<$no; $k++)
+	{
+	   if($result)
+	   {
+		$result .= "$str[$k]::";
+	   }
+	   else
+	   {
+                $result = "$str[$k]::";
+	   }
+	}
+	$result =~ s/::$//;
+	$result[$n] = $result;
+	$n++;
+  }
+
+  warn $DBI::errstr if $DBI::err;
+  $sth->finish;
+#  $dbh->disconnect;
+  return ($n, @result);
+}
+
+##################################################################
+# Name:    run_SQL
+# Purpose: Execute SQL command against RGD database. If you want 
+#          to connect to other sources, you need to change the
+#          DBI->connect.
+# Usage:   &run_SQL($query)
+#              $dbh --- database handler
+#              $query --- SQL command
+##################################################################
+
+sub run_SQL 
+{
+  my($dbh, $query) = @_;
+
+   print "$query \n";
+
+  my $sth = $dbh->prepare($query)
+        or die "Can't prepare statement: $DBI::errstr";
+
+  $sth->execute
+        or die "Can't execute staement: $DBI::errstr";
+
+  warn $DBI::errstr if $DBI::err;
+  $sth->finish;
+#  $dbh->disconnect;
+}
+
+
+##################################################################
+# Name:    generate_Key
+# Purpose: Generate a key for a specific table.
+# Usage:   &generate_Key($dbh, $col, $tab)
+#              $dbh --- database handler
+#	       $col --- column name
+#	       $tab --- table name
+##################################################################
+
+sub generate_Key 
+{
+  my($dbh, $col, $tab) = @_;
+ 
+  my $sql = "select max($col) from $tab";
+
+  my ($n, @result) = ();
+  ($n, @result) = &query_Data($dbh, 1, $sql);
+
+  my $key = ();
+  if($result[0])
+  {
+     $key = $result[0] + 1;
+  }
+  else
+  {
+     $key = 1;
+  }
+} # end the generate_Key
+
+1;
